@@ -55,6 +55,12 @@ const Header = () => {
       <HiBell className="text-[35px] md:text-[40px] cursor-pointer" />
       <HiChat className="text-[35px] md:text-[40px] cursor-pointer" />
 
+      <button
+        className="bg-red-600 hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block"
+        onClick={() => signOut()}>
+        LogOut
+      </button>
+
       {session?.user ? (
         <Image
           src={session?.user?.image}
@@ -70,11 +76,6 @@ const Header = () => {
           Login
         </button>
       )}
-      <button
-        className="bg-red-600 hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block"
-        onClick={() => signOut()}>
-        LogOut
-      </button>
     </div>
   );
 };
