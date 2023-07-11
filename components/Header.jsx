@@ -6,7 +6,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { HiSearch } from "react-icons/Hi";
 import { HiBell } from "react-icons/Hi";
 import { HiChat } from "react-icons/Hi";
@@ -16,20 +16,21 @@ const Header = () => {
   const { data: session } = useSession();
   console.log("session", session);
 
-  // const db = getFirestore(app);
+  const db = getFirestore(app);
 
-  // const saveUserInfo = async () => {
-  //   if (session.user) {
-  //     await setDoc(
-  //       doc(db, "firebasedb", "session.firebasedb.Fn2d3BJcUjPI0DQpGmkP"),
-  //       {
-  //         userName: "session.firebasedb.Fn2d3BJcUjPI0DQpGmkP",
-  //         email: "session.firebasedb.Fn2d3BJcUjPI0DQpGmkP",
-  //         userImage: "session.firebasedb.Fn2d3BJcUjPI0DQpGmkP",
-  //       }
-  //     );
-  //   }
-  // };
+  useEffect(() => {
+    saveUserInfo();
+  }, [session]);
+
+  const saveUserInfo = async () => {
+    if (session?.user) {
+      await setDoc(doc(db, "firebasedb", session.user.email), {
+        userName: session.user.name,
+        email: session.user.email,
+        userImage: session.user.image,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-row gap-3 md:gap-2 items-center p-4 drop-shadow-md">
