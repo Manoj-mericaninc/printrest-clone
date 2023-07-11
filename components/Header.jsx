@@ -11,10 +11,13 @@ import { HiSearch } from "react-icons/Hi";
 import { HiBell } from "react-icons/Hi";
 import { HiChat } from "react-icons/Hi";
 import app from "@/app/firebase/firebase";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { data: session } = useSession();
   console.log("session", session);
+
+  const router = useRouter();
 
   const db = getFirestore(app);
 
@@ -41,10 +44,16 @@ const Header = () => {
         height={80}
         className="hover:bg-gray-300 p-1 rounded-full cursor-pointer"
       />
-      <button className="bg-black text-white font-semibold rounded-full p-2 px-4 hidden md:block">
+      <button
+        className="bg-black text-white font-semibold rounded-full p-2 px-4 hidden md:block"
+        onClick={() => router.push("/")}>
         Home
       </button>
-      <button className="font-semibold px-4">Create</button>
+      <button
+        className="font-semibold px-4"
+        onClick={() => router.push("/pin-builder")}>
+        Create
+      </button>
       <div className="bg-gray-200 p-2 flex gap-3 items-center rounded-full w-full hidden md:flex">
         <HiSearch className="text-[25px]" />
         <input
@@ -57,7 +66,7 @@ const Header = () => {
       <HiChat className="text-[35px] md:text-[40px] cursor-pointer" />
 
       <button
-        className="bg-red-600 hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block"
+        className="bg-red-600 hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block drop-shadow-lg"
         onClick={() => signOut()}>
         LogOut
       </button>
@@ -65,14 +74,15 @@ const Header = () => {
       {session?.user ? (
         <Image
           src={session?.user?.image}
+          onClick={() => router.push("/" + session.user.email)}
           alt="logo"
           width={50}
           height={50}
-          className="hover:bg-gray-300 p-2 rounded-full cursor-pointer"
+          className="hover:bg-gray-300 p-2 rounded-full cursor-pointer drop-shadow-lg"
         />
       ) : (
         <button
-          className="bg-black hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block"
+          className="bg-black hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block drop-shadow-lg"
           onClick={() => signIn()}>
           Login
         </button>
