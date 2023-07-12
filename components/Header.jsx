@@ -7,9 +7,9 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { HiSearch } from "react-icons/Hi";
-import { HiBell } from "react-icons/Hi";
-import { HiChat } from "react-icons/Hi";
+import { HiSearch } from "react-icons/hi";
+import { HiBell } from "react-icons/hi";
+import { HiChat } from "react-icons/hi";
 import app from "@/app/firebase/firebase";
 import { useRouter } from "next/navigation";
 
