@@ -7,7 +7,7 @@ const UploadImage = ({ setFile }) => {
 
   return (
     <div
-      className="h-[450px] bg-[#e9e9e9]
+      className="h-[460px] bg-[#e9e9e9]
     rounded-lg">
       <label
         className="m-5 flex flex-col justify-center items-center
