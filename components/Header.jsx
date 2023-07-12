@@ -35,6 +35,17 @@ const Header = () => {
     }
   };
 
+  const onCreateClik = () => {
+    if (session) {
+      router.push("/pin-builder");
+    } else {
+      signIn();
+    }
+  };
+  const handleLogout = () => {
+    router.push("/");
+    signOut();
+  };
   return (
     <div className="flex flex-row gap-3 md:gap-2 items-center p-4 drop-shadow-md">
       <Image
@@ -43,15 +54,14 @@ const Header = () => {
         width={80}
         height={80}
         className="hover:bg-gray-300 p-1 rounded-full cursor-pointer"
+        onClick={() => router.push("/")}
       />
       <button
         className="bg-black text-white font-semibold rounded-full p-2 px-4 hidden md:block"
         onClick={() => router.push("/")}>
         Home
       </button>
-      <button
-        className="font-semibold px-4"
-        onClick={() => router.push("/pin-builder")}>
+      <button className="font-semibold px-4" onClick={() => onCreateClik()}>
         Create
       </button>
       <div className="bg-gray-200 p-2 flex gap-3 items-center rounded-full w-full hidden md:flex">
@@ -67,7 +77,7 @@ const Header = () => {
 
       <button
         className="bg-red-600 hover:bg-gray-300 text-white hover:text-black font-semibold rounded-full p-2 px-4 hidden md:block drop-shadow-lg"
-        onClick={() => signOut()}>
+        onClick={() => handleLogout()}>
         LogOut
       </button>
 

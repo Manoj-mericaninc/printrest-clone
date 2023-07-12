@@ -1,23 +1,60 @@
 /** @format */
+
 "use client";
 import React, { useState } from "react";
+import UploadImage from "./UploadImage";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import UserTag from "./UserTag";
+import app from "@/app/firebase/firebase";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import UserTag from "./UserTag";
-import { useSession } from "next-auth/react";
-import UploadImage from "./UploadImage";
-
-const Form = () => {
-  const { data: session } = useSession;
+function Form() {
+  const { data: session } = useSession();
   console.log("session", session);
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
   const [link, setLink] = useState();
   const [file, setFile] = useState();
-
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const storage = getStorage(app);
+  const db = getFirestore(app);
+  const postId = Date.now().toString();
   const onSave = () => {
-    console.log("Title:", title, "Desc:", desc, "Link:", link);
-    console.log("File:", file);
+    setLoading(true);
+    uploadFile();
+  };
+
+  const uploadFile = () => {
+    const storageRef = ref(storage, "pinterest/" + file?.name);
+    uploadBytes(storageRef, file)
+      .then((snapshot) => {
+        console.log("File Uploaded");
+      })
+      .then((resp) => {
+        getDownloadURL(storageRef).then(async (url) => {
+          console.log("DownloadUrl", url);
+          const postData = {
+            title: title,
+            desc: desc,
+            link: link,
+            image: url,
+            userName: session?.user?.name,
+            email: session?.user?.email,
+            userImage: session?.user?.image,
+            id: postId,
+          };
+
+          await setDoc(doc(db, "firebasedb", postId), postData).then((resp) => {
+            console.log("Saved");
+            setLoading(true);
+            router.push("/" + session.user.email);
+          });
+        });
+      });
   };
 
   return (
@@ -28,14 +65,17 @@ const Form = () => {
           className="bg-red-500 p-2
             text-white font-semibold px-3 
             rounded-lg">
-          <Image
-            src="/loading-indicator.png"
-            width={30}
-            height={30}
-            alt="loading"
-            className="animate-spin"
-          />
-          <span>Save</span>
+          {loading ? (
+            <Image
+              src="/loading-indicator.png"
+              width={30}
+              height={30}
+              alt="loading"
+              className="animate-spin bg-red-600"
+            />
+          ) : (
+            <span>Save</span>
+          )}
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -73,6 +113,6 @@ const Form = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Form;
