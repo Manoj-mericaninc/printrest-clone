@@ -20,15 +20,15 @@ const PinItem = ({ pin }) => {
        before:rounded-3xl
        before:z-10
        hover:before:bg-gray-600 
-       before:opacity-40
+       before:opacity-50
        cursor-pointer
        "
         onClick={() => router.push("/pin/" + pin.id)}>
         <Image
           src={pin.image}
           alt={pin.title}
-          width={400}
-          height={400}
+          width={500}
+          height={500}
           className="rounded-3xl 
         cursor-pointer relative z-0"
         />
