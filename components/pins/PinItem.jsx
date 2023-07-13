@@ -20,7 +20,7 @@ const PinItem = ({ pin }) => {
        before:rounded-3xl
        before:z-10
        hover:before:bg-gray-600 
-       before:opacity-50
+       before:opacity-40
        cursor-pointer
        "
         onClick={() => router.push("/pin/" + pin.id)}>
