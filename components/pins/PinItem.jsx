@@ -27,8 +27,8 @@ const PinItem = ({ pin }) => {
         <Image
           src={pin.image}
           alt={pin.title}
-          width={500}
-          height={500}
+          width={400}
+          height={400}
           className="rounded-3xl 
         cursor-pointer relative z-0"
         />
